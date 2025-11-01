@@ -1,0 +1,278 @@
+================================================================================
+    DoS DETECTION AND PREVENTION SYSTEM - QUICK START GUIDE
+================================================================================
+
+📋 PREREQUISITES:
+   - Python 3.10 or higher installed
+   - pip package manager
+   - Modern web browser
+
+================================================================================
+🚀 STEP-BY-STEP INSTRUCTIONS:
+================================================================================
+
+STEP 1: INSTALL DEPENDENCIES
+----------------------------
+Open terminal and run:
+
+    pip install -r requirements.txt
+
+This installs Flask, Requests, and Werkzeug.
+
+================================================================================
+
+STEP 2: START TARGET SERVER (Terminal 1)
+----------------------------------------
+Open first terminal and run:
+
+    python target_server.py
+
+You should see:
+    ============================================================
+    Target Server - Simulated Victim Website
+    ============================================================
+    Available endpoints:
+      - http://127.0.0.1:5000/         (Home page)
+      - http://127.0.0.1:5000/about    (About page)
+      - http://127.0.0.1:5000/api/data (API endpoint)
+    ============================================================
+
+✅ Keep this terminal running!
+
+================================================================================
+
+STEP 3: START DETECTION SERVER (Terminal 2)
+-------------------------------------------
+Open second terminal and run:
+
+    python app.py
+
+You should see:
+    ============================================================
+    DoS Detection and Prevention System - Detection Server
+    ============================================================
+    Configuration:
+      - Request Threshold: 20 requests per minute
+      - Block Duration: 300 seconds
+      - Monitor Window: 60 seconds
+    ============================================================
+    Dashboard: http://127.0.0.1:8000
+    ============================================================
+
+✅ Keep this terminal running!
+
+================================================================================
+
+STEP 4: OPEN DASHBOARD
+----------------------
+Open your web browser and go to:
+
+    http://127.0.0.1:8000
+
+You should see a beautiful dashboard with:
+   - Header statistics (Total Requests, Blocked IPs)
+   - Traffic monitor chart
+   - Active IP addresses table
+   - System configuration
+   - Blocked IPs list
+   - Attack log
+   - Test controls
+
+================================================================================
+
+STEP 5: TEST THE SYSTEM
+-----------------------
+
+METHOD A - Use Dashboard Test Button:
+   1. Click "Send Test Request" button 25+ times rapidly
+   2. Watch the dashboard detect and block your IP
+   3. See the alert banner appear
+   4. Check the attack log
+
+METHOD B - Use Attack Simulator (Terminal 3):
+   1. Open third terminal
+   2. Run: python attack_simulator.py
+   3. Select option 2 (DoS Attack)
+   4. Watch the dashboard in real-time
+
+METHOD C - Manual Browser Test:
+   1. Open http://127.0.0.1:5000 in browser
+   2. Refresh page rapidly 25+ times
+   3. Check dashboard to see blocking
+
+================================================================================
+
+📊 WHAT TO EXPECT:
+================================================================================
+
+NORMAL BEHAVIOR (< 20 requests/minute):
+   ✅ Requests appear in "Active IP Addresses" table
+   ✅ Status shows "ACTIVE"
+   ✅ No alerts or blocking
+
+ATTACK DETECTED (> 20 requests/minute):
+   🚨 Red alert banner appears
+   🚨 IP status changes to "BLOCKED"
+   🚨 Entry added to "Recent Attack Log"
+   🚨 IP listed in "Blocked IP Addresses"
+   🚨 Blocked for 5 minutes, then auto-unblocked
+
+================================================================================
+
+🎯 SYSTEM CONFIGURATION:
+================================================================================
+
+Detection Rules:
+   - Threshold: 20 requests per minute
+   - Block Duration: 5 minutes (300 seconds)
+   - Monitor Window: 60 seconds
+   - Auto-refresh: Every 3 seconds
+
+Ports:
+   - Target Server: 5000
+   - Detection Server: 8000
+
+================================================================================
+
+🧪 TESTING SCENARIOS:
+================================================================================
+
+1. NORMAL TRAFFIC TEST:
+   python attack_simulator.py
+   → Select option 1
+   → Duration: 30 seconds
+   → Rate: 1 request/second
+   → Expected: No blocking
+
+2. DoS ATTACK TEST:
+   python attack_simulator.py
+   → Select option 2
+   → Total requests: 50
+   → Delay: 0.1 seconds
+   → Expected: IP blocked after ~20 requests
+
+3. DISTRIBUTED ATTACK TEST:
+   python attack_simulator.py
+   → Select option 3
+   → Total requests: 100
+   → Threads: 5
+   → Expected: Rapid blocking
+
+================================================================================
+
+🐛 TROUBLESHOOTING:
+================================================================================
+
+Problem: "Port already in use"
+Solution:
+   lsof -i :8000
+   kill -9 <PID>
+
+Problem: "Module not found"
+Solution:
+   pip install -r requirements.txt --force-reinstall
+
+Problem: Dashboard not loading
+Solution:
+   - Check if app.py is running
+   - Try: curl http://127.0.0.1:8000
+   - Hard refresh browser: Ctrl+F5
+
+Problem: Can't connect to target server
+Solution:
+   - Check if target_server.py is running
+   - Try: curl http://127.0.0.1:5000
+   - Check terminal for errors
+
+================================================================================
+
+📝 LOG FILES:
+================================================================================
+
+Attack logs are saved to:
+   logs/attack_log.txt
+
+Format:
+   [2025-11-01 12:30:45] ALERT: 127.0.0.1 exceeded threshold with 25 requests - BLOCKED for 300s
+
+To view logs:
+   cat logs/attack_log.txt
+
+To clear logs:
+   Click "Clear Logs" button in dashboard
+
+================================================================================
+
+🎓 FOR PRESENTATION/VIVA:
+================================================================================
+
+Key Points to Highlight:
+   ✅ Real-time monitoring with auto-refresh
+   ✅ Automatic attack detection
+   ✅ Visual feedback with charts and alerts
+   ✅ Configurable thresholds
+   ✅ Persistent logging
+   ✅ Thread-safe operations
+   ✅ Professional UI/UX
+
+Demo Flow:
+   1. Show both servers running
+   2. Open dashboard and explain features
+   3. Run normal traffic test (no blocking)
+   4. Run DoS attack (show blocking)
+   5. Show logs and blocked IPs
+   6. Explain auto-unblock feature
+
+Questions You Might Be Asked:
+   Q: How does detection work?
+   A: Tracks requests per IP in 60-second window. If > 20, IP blocked.
+
+   Q: What happens to blocked IPs?
+   A: Blocked for 5 minutes, then auto-unblocked.
+
+   Q: How is data stored?
+   A: In-memory for real-time, text file for persistence.
+
+   Q: Can you change threshold?
+   A: Yes, edit REQUEST_THRESHOLD in app.py.
+
+   Q: How does dashboard update?
+   A: JavaScript fetches /api/stats every 3 seconds.
+
+================================================================================
+
+📚 DOCUMENTATION:
+================================================================================
+
+For detailed information, see:
+   - PROJECT_README.md      (Complete project documentation)
+   - SETUP_GUIDE.md         (Detailed setup instructions)
+   - USAGE_INSTRUCTIONS.md  (Quick usage guide)
+
+================================================================================
+
+✅ VERIFICATION CHECKLIST:
+================================================================================
+
+Before demonstration:
+   [ ] Python 3.10+ installed
+   [ ] Dependencies installed
+   [ ] Target server running (port 5000)
+   [ ] Detection server running (port 8000)
+   [ ] Dashboard accessible in browser
+   [ ] Attack simulator tested
+   [ ] Logs directory exists
+   [ ] All files present
+
+================================================================================
+
+🎉 YOU'RE READY!
+================================================================================
+
+Your DoS Detection and Prevention System is now fully operational!
+
+Open http://127.0.0.1:8000 and start testing!
+
+Good luck with your presentation! 🚀
+
+================================================================================

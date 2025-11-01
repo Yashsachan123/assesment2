@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoS Detection & Prevention System - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🛡️ DoS Detection & Prevention System</h1>
+                <p class="subtitle">Real-time Traffic Monitoring Dashboard</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRequests">0</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="stat-value" id="blockedCount">0</div>
+                    <div class="stat-label">Blocked IPs</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Alert Banner -->
+        <div id="alertBanner" class="alert-banner hidden">
+            <span class="alert-icon">⚠️</span>
+            <span id="alertMessage">Attack detected!</span>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Traffic Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Traffic Monitor</h2>
+                        <span class="status-indicator active">Live</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- IP Activity Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🌐 Active IP Addresses</h2>
+                        <button class="btn-refresh" onclick="refreshData()">🔄 Refresh</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>IP Address</th>
+                                        <th>Requests</th>
+                                        <th>Status</th>
+                                        <th>Last Seen</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ipTableBody">
+                                    <tr>
+                                        <td colspan="4" class="no-data">No active connections</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- System Configuration -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>⚙️ System Configuration</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="config-item">
+                            <span class="config-label">Request Threshold:</span>
+                            <span class="config-value">20 requests/min</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-label">Block Duration:</span>
+                            <span class="config-value">5 minutes</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-label">Monitor Window:</span>
+                            <span class="config-value">60 seconds</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-label">Target Server:</span>
+                            <span class="config-value">http://127.0.0.1:5000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blocked IPs -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🚫 Blocked IP Addresses</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="blockedIpsList" class="blocked-list">
+                            <p class="no-data">No blocked IPs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attack Log -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📝 Recent Attack Log</h2>
+                        <button class="btn-clear" onclick="clearLogs()">Clear Logs</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="attackLog" class="log-container">
+                            <p class="no-data">No attacks detected</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Controls -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🧪 Test Controls</h2>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn-test" onclick="simulateRequest()">Send Test Request</button>
+                        <p class="test-info">Click to simulate a request and test the detection system</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>DoS Detection System v1.0 | Last Updated: <span id="lastUpdate">--:--:--</span></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
